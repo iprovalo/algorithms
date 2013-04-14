@@ -23,58 +23,6 @@ public class SeamCarverTest {
 		assertEquals(pic, seamCarver.picture());
 	}
 
-	@Test
-    public void testEnergySumWithRandomInput() {
-        Picture pic = getWxHPicture(7, 9);
-
-        SeamCarver seamCarver = new SeamCarver(pic);
-        CopyOfSeamCarverFirstCut seamCarverBellmanFord = new CopyOfSeamCarverFirstCut(pic);
-
-        for (int x = 0; x < 12; x++) {
-            System.out.println(x);
-            double sumForMain = 0;
-            double sumForBellmanFord = 0;
-
-            if (x % 2 == 0) {
-                int[] actual = seamCarver.findHorizontalSeam();
-                System.out.println("Regular before: ");
-                printColors(seamCarver.picture());
-                PrintSeams.printHorizontalSeam(seamCarver);
-                int[] actualBellmanFord = seamCarverBellmanFord
-                        .findHorizontalSeam();
-                System.out.println("BellmanFord before: ");
-                printColors(seamCarverBellmanFord.picture());
-                PrintSeams.printHorizontalSeam(seamCarverBellmanFord);
-                for (int i = 0; i < seamCarver.width(); i++) {
-                    sumForMain += seamCarver.energy(i, actual[i]);
-                    sumForBellmanFord += seamCarverBellmanFord.energy(i,
-                            actualBellmanFord[i]);
-                }
-                seamCarver.removeHorizontalSeam(actual);
-                System.out.println("Regular after: ");
-                printColors(seamCarver.picture());
-                seamCarverBellmanFord.removeHorizontalSeam(actualBellmanFord);
-                System.out.println("BellmanFord after: ");
-                printColors(seamCarverBellmanFord.picture());
-            } else {
-                int[] actual = seamCarver.findVerticalSeam();
-                System.out.println("Regular");
-                PrintSeams.printVerticalSeam(seamCarver);
-                int[] actualBellmanFord = seamCarverBellmanFord.findVerticalSeam();
-                System.out.println("BellmanFord");
-                PrintSeams.printVerticalSeam(seamCarverBellmanFord);
-                for (int i = 0; i < seamCarver.height(); i++) {
-                	//System.out.println(actual[i]+":"+seamCarver.energy(actual[i],i)+" vs " + actualBellmanFord[i]+":"+seamCarverBellmanFord.energy(actualBellmanFord[i],i));
-                    sumForMain += seamCarver.energy(actual[i],i);
-                    sumForBellmanFord += seamCarverBellmanFord.energy(actualBellmanFord[i],i);
-                }
-                seamCarver.removeVerticalSeam(actual);
-                seamCarverBellmanFord.removeVerticalSeam(actualBellmanFord);
-            }
-            assertEquals(sumForBellmanFord, sumForMain, 0.0001);
-        }
-
-    }
 	
 	@Test
 	public void testEnergySum() {
